@@ -1,6 +1,3 @@
-L
-Salin
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -497,13 +494,15 @@ Salin
         padding: 6rem 1.25rem 2.5rem;
       }
       .hero-label { margin-bottom: 1rem; }
-      .hero-top {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 1.25rem;
-      }
-      .hero-photo-wrap { align-items: flex-start; }
+     .hero-top {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.hero-photo-wrap { align-items: center; }
+.hero-name { flex: 1; }
       .hero-name { font-size: clamp(2.2rem, 11vw, 3.5rem); }
       .hero-photo { width: 100px; height: 100px; }
       .photo-hint { display: none; }
