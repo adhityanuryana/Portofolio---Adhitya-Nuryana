@@ -4,548 +4,308 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio — Adhitya Nuryana</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-
-.lightbox {
-  display: flex;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0);
-  z-index: 999;
-  align-items: center;
-  justify-content: center;
-  cursor: zoom-out;
-  pointer-events: none;
-  transition: background 0.3s ease;
-}
-.lightbox.active {
-  background: rgba(0,0,0,0.92);
-  pointer-events: all;
-}
-.lightbox img {
-  max-width: 90vw;
-  max-height: 90vh;
-  object-fit: contain;
-  border-radius: 8px;
-  cursor: default;
-  transform: scale(0.85);
-  opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.lightbox.active img {
-  transform: scale(1);
-  opacity: 1;
-}
+    /* ---------------------------------------------------
+       1. RESET & VARIABEL
+       --------------------------------------------------- */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #0d0d0d;
-      --bg2:     #141414;
-      --bg3:     #1c1c1c;
-      --border:  rgba(255,255,255,0.07);
-      --border2: rgba(255,255,255,0.13);
-      --text:    #f0ede6;
-      --muted:   #888882;
-      --accent:  #c8f55a;
-      --accent2: #a8d43a;
-      --font-head: 'Syne', sans-serif;
-      --font-body: 'DM Sans', sans-serif;
+      --bg-void: #030508;       
+      --bg-panel: #0a0d14;      
+      
+      --lux-gold: #D4AF37;      
+      --neon-cyan: #00F0FF;     
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      
+      --font-lux: 'Cinzel', serif;
+      --font-tech: 'Space Grotesk', sans-serif;
     }
 
+    /* DOKUMENTASI FIX: Scroll dipastikan natural, tanpa batas tinggi yang bikin macet */
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
-
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.1rem 3rem;
-      background: rgba(13,13,13,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      font-family: var(--font-head);
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--accent);
-      text-decoration: none;
-    }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.875rem;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); }
-
-    #hero {
+      font-family: var(--font-tech);
+      font-size: 15px; line-height: 1.7;
+      background-color: var(--bg-void);
+      color: var(--text-main);
+      margin: 0; padding: 0;
+      overflow-x: hidden; /* Hanya memotong tumpahan horizontal dengan aman */
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 8rem 3rem 5rem;
-      position: relative;
-      border-bottom: 1px solid var(--border);
     }
-    .hero-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-      font-weight: 500;
-    }
-    .hero-top {
-      display: flex;
-      align-items: flex-end;
-      gap: 7rem;
-      margin-bottom: 2rem;
-    }
-    .hero-name {
-      font-family: var(--font-head);
-      font-size: clamp(3.5rem, 9vw, 8rem);
-      font-weight: 800;
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-    }
-    .hero-name .line2 {
-      color: transparent;
-      -webkit-text-stroke: 1.5px rgba(255,255,255,0.25);
-    }
-    .hero-photo-wrap {
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      padding-bottom: 0.4rem;
-    }
-    .hero-photo {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      border: 2px solid var(--border2);
-      overflow: hidden;
-      cursor: pointer;
-      position: relative;
-      background: var(--bg3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.2s;
-    }
-    .hero-photo:hover { border-color: var(--accent); }
-    .hero-photo img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: none;
-      position: absolute; top: 0; left: 0;
-    }
-    .photo-ph {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--muted);
-      pointer-events: none;
-    }
-    .photo-ph svg { width: 28px; height: 28px; opacity: 0.4; }
-    .photo-ph span { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
-    .photo-hint { font-size: 0.68rem; color: var(--muted); opacity: 0.45; }
 
-    .hero-sub { display: flex; align-items: flex-start; gap: 4rem; max-width: 700px; }
-    .hero-tagline { font-size: 1rem; color: var(--muted); max-width: 280px; line-height: 1.6; }
-    .hero-cta { display: flex; gap: 1rem; align-items: center; flex-shrink: 0; }
+    ::selection { background: var(--lux-gold); color: #000; }
 
+    /* Latar Ambient dipindah ke posisi Fixed agar performa scroll super ringan */
+    .bg-ambient {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-color: var(--bg-void);
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.05), transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.05), transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(157, 0, 255, 0.05), transparent 40%);
+    }
+
+    .text-gradient {
+      background: linear-gradient(to right, var(--lux-gold), var(--neon-cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    /* ---------------------------------------------------
+       2. NAVIGASI
+       --------------------------------------------------- */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 5rem;
+      background: rgba(3, 5, 8, 0.7);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    .nav-logo { 
+      font-family: var(--font-lux); font-size: 1.8rem; font-weight: 700; 
+      color: var(--lux-gold); text-decoration: none; letter-spacing: 3px;
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+    
+    .nav-links { display: flex; gap: 3rem; list-style: none; }
+    .nav-links a { 
+      color: var(--text-main); text-decoration: none; font-size: 0.85rem; 
+      font-weight: 500; text-transform: uppercase; letter-spacing: 2px;
+      transition: all 0.3s; position: relative; padding-bottom: 5px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 0; height: 1px; background: var(--neon-cyan); transition: width 0.3s ease;
+      box-shadow: 0 0 8px var(--neon-cyan);
+    }
+    .nav-links a:hover { color: var(--neon-cyan); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+    /* ---------------------------------------------------
+       3. KARTU HOLOGRAFIS (THE ULTIMATE BUG FIX)
+       DOKUMENTASI: Cahaya dimasukkan ke dalam .holo-glow agar tidak meluber keluar layar
+       --------------------------------------------------- */
+    .holo-card {
+      position: relative;
+      border-radius: 20px;
+      padding: 3rem;
+      transform-style: preserve-3d;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      z-index: 1;
+    }
+
+    /* Ini adalah pelindung cahaya yang memecahkan masalah double scrollbar */
+    .holo-glow {
+      position: absolute; inset: 0;
+      border-radius: 20px;
+      overflow: hidden; /* Mengunci tumpahan cahaya 200% dengan aman */
+      z-index: -1;
+      background: rgba(10, 13, 20, 0.6);
+    }
+    .holo-glow::before {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: conic-gradient(transparent, rgba(212, 175, 55, 0.8), transparent 30%, transparent 50%, rgba(0, 240, 255, 0.8), transparent 80%);
+      animation: spin 6s linear infinite; z-index: 1;
+      opacity: 0.5; transition: opacity 0.3s;
+    }
+    .holo-card:hover .holo-glow::before { opacity: 1; animation-duration: 3s; }
+    
+    .holo-glow::after {
+      content: ''; position: absolute; inset: 2px;
+      background: var(--bg-panel); border-radius: 18px; z-index: 2;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* Elemen teks/konten di dalam kartu */
+    .holo-content { position: relative; z-index: 2; transform: translateZ(20px); }
+
+    /* ---------------------------------------------------
+       4. TOMBOL NEON
+       --------------------------------------------------- */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.65rem 1.4rem;
-      border-radius: 100px;
-      font-family: var(--font-body);
-      font-size: 0.875rem;
-      font-weight: 500;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 1rem 2.5rem; font-size: 0.85rem; font-weight: 600; 
+      text-transform: uppercase; letter-spacing: 3px; text-decoration: none; 
+      cursor: pointer; transition: all 0.4s ease; border-radius: 30px; 
+      z-index: 1; border: 1px solid transparent;
     }
-    .btn-primary { background: var(--accent); color: #0d0d0d; }
-    .btn-primary:hover { background: var(--accent2); }
-    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border2); }
-    .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+    .btn-gold { 
+      background: transparent; color: var(--lux-gold); border-color: var(--lux-gold);
+      box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.1), 0 0 15px rgba(212, 175, 55, 0.1);
+    }
+    .btn-gold:hover { background: var(--lux-gold); color: #000; box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); transform: translateY(-3px);}
+    
+    .btn-cyan { 
+      background: transparent; color: var(--neon-cyan); border-color: var(--neon-cyan);
+      box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1), 0 0 15px rgba(0, 240, 255, 0.1);
+    }
+    .btn-cyan:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 25px rgba(0, 240, 255, 0.5); transform: translateY(-3px);}
 
-    .hero-scroll {
-      position: absolute;
-      right: 3rem; bottom: 5rem;
-      writing-mode: vertical-rl;
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
+    /* ---------------------------------------------------
+       5. HERO SECTION
+       --------------------------------------------------- */
+    #hero {
+      min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; 
+      align-items: center; gap: 4rem; padding: 8rem 5rem 4rem; max-width: 1400px; margin: 0 auto;
     }
-    .hero-scroll::after {
-      content: '';
-      display: block;
-      width: 1px; height: 60px;
-      background: var(--border2);
-    }
+    
+    .hero-text { position: relative; z-index: 2; transform: translateZ(30px); }
+    .hero-label { font-size: 0.8rem; letter-spacing: 5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.5rem; display: block;}
+    .hero-name { font-family: var(--font-lux); font-size: clamp(3.5rem, 6vw, 5.5rem); font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem;}
+    .hero-tagline { font-size: 1.1rem; color: var(--text-muted); max-width: 550px; margin-bottom: 3rem; font-weight: 300; line-height: 1.8;}
+    .hero-cta { display: flex; gap: 1.5rem; }
 
-    section { padding: 6rem 3rem; border-bottom: 1px solid var(--border); }
-    .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 4rem; }
-    .section-num { font-size: 0.7rem; color: var(--accent); font-weight: 500; letter-spacing: 0.1em; }
-    .section-title {
-      font-family: var(--font-head);
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1;
+    .hero-visual { display: flex; justify-content: center; perspective: 1000px; }
+    .photo-wrap {
+      width: 380px; height: 480px; position: relative; padding: 15px;
+      border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 24px;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(212, 175, 55, 0.05));
+      box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.1), 0 20px 50px rgba(0,0,0,0.5);
+      transform-style: preserve-3d; transition: transform 0.1s; 
     }
-    .section-line { flex: 1; height: 1px; background: var(--border); }
+    .photo-wrap::before, .photo-wrap::after {
+      content: ''; position: absolute; width: 30px; height: 30px; border-color: var(--lux-gold); border-style: solid; z-index: 3; pointer-events: none;
+    }
+    .photo-wrap::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+    .photo-wrap::after { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
 
-    #about .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
-    .about-bio { font-size: 1.05rem; color: var(--muted); line-height: 1.85; }
-    .about-bio strong { color: var(--text); font-weight: 400; }
-    .about-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
+    .hero-photo {
+      width: 100%; height: 100%; border-radius: 12px; overflow: hidden; 
+      cursor: pointer; position: relative; background-color: var(--bg-panel);
+      display: flex; align-items: center; justify-content: center; transform: translateZ(20px);
     }
-    .stat-box { background: var(--bg2); padding: 2rem 1.75rem; }
-    .stat-num {
-      font-family: var(--font-head);
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 0.4rem;
-    }
-    .stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.05em; }
+    .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top:0; left:0; filter: contrast(1.1) saturate(0.8); transition: filter 0.5s ease;}
+    .hero-photo:hover img { filter: contrast(1) saturate(1.2); }
+    .photo-ph { font-family: var(--font-tech); font-size: 0.8rem; font-weight: 600; color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; pointer-events: none;}
 
-    #skills .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    .skill-category { background: var(--bg2); padding: 2rem 1.75rem; }
-    .skill-cat-title {
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 500;
-      margin-bottom: 1.25rem;
-    }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .skill-tag {
-      font-size: 0.8rem;
-      padding: 0.35rem 0.85rem;
-      border-radius: 100px;
-      background: var(--bg3);
-      color: var(--muted);
-      border: 1px solid var(--border2);
-      transition: all 0.2s;
-    }
-    .skill-tag:hover {
-      color: var(--text);
-      border-color: rgba(200,245,90,0.3);
-      background: rgba(200,245,90,0.05);
-    }
+    /* ---------------------------------------------------
+       6. LAYOUT SECTION UMUM
+       --------------------------------------------------- */
+    section { padding: 8rem 4rem; max-width: 1300px; margin: 0 auto; position: relative; z-index: 2; width: 100%;}
+    .section-header { margin-bottom: 5rem; text-align: center; }
+    .section-label { font-size: 0.85rem; color: var(--lux-gold); letter-spacing: 4px; text-transform: uppercase; display: block; margin-bottom: 1rem;}
+    .section-title { font-family: var(--font-lux); font-size: 3rem; font-weight: 600; color: var(--text-main); }
 
-    #projects .projects-list {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    .project-item {
-      display: flex;
-      flex-direction: column;
-      background: var(--bg2);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.2s;
-    }
-    .project-item:last-child { border-bottom: none; }
-    .project-item:hover { background: var(--bg3); }
+    /* ---------------------------------------------------
+       7. ABOUT (Grid)
+       --------------------------------------------------- */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-bio { font-size: 1.1rem; color: var(--text-muted); line-height: 1.9; font-weight: 300; }
+    .about-bio strong { color: var(--lux-gold); font-weight: 500; }
+    
+    .stats-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .stat-box { border: 1px solid rgba(255,255,255,0.05); padding: 2rem; border-radius: 12px; background: rgba(0,0,0,0.3); text-align: center;}
+    .stat-val { font-family: var(--font-lux); font-size: 2rem; font-weight: 700; color: var(--neon-cyan); margin-bottom: 0.5rem; display: block;}
+    .stat-lbl { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
 
-    .project-main {
-      display: grid;
-      grid-template-columns: 2fr 1fr auto;
-      align-items: center;
-      gap: 2rem;
-      padding: 2rem 2.5rem;
-    }
-    .project-name {
-      font-family: var(--font-head);
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-      letter-spacing: -0.01em;
-    }
-    .project-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.5; }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: flex-end; }
-    .project-tag {
-      font-size: 0.7rem;
-      padding: 0.25rem 0.7rem;
-      border-radius: 100px;
-      background: rgba(200,245,90,0.08);
-      color: var(--accent);
-      border: 1px solid rgba(200,245,90,0.2);
-    }
-    .project-arrow {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      border: 1px solid var(--border2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 1rem;
-      flex-shrink: 0;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .project-item:hover .project-arrow { border-color: var(--accent); color: var(--accent); }
+    /* ---------------------------------------------------
+       8. SKILLS
+       --------------------------------------------------- */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+    .skill-cat h3 { font-family: var(--font-lux); font-size: 1.2rem; color: var(--lux-gold); margin-bottom: 1.5rem; letter-spacing: 1px;}
+    .skill-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+    .skill-list li { font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; gap: 15px; }
+    .skill-list li::before { content: '⬡'; color: var(--neon-cyan); font-size: 0.6rem; }
 
-    .project-imgs {
-      display: flex;
-      height: 180px;
-      gap: 1px;
-      background: var(--border);
-      border-top: 1px solid var(--border);
-    }
+    /* ---------------------------------------------------
+       9. PROJECTS
+       --------------------------------------------------- */
+    .projects-list { display: flex; flex-direction: column; gap: 6rem; }
+    .project-item { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center;}
+    .project-item:nth-child(even) { direction: rtl; } 
+    .project-item:nth-child(even) > * { direction: ltr; }
+    
+    .proj-name { font-family: var(--font-lux); font-size: 2.2rem; font-weight: 600; color: var(--lux-gold); margin-bottom: 1rem; }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+    .proj-tag { font-size: 0.75rem; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 2px; font-weight: 500; border: 1px solid rgba(0, 240, 255, 0.3); padding: 4px 12px; border-radius: 20px;}
+    .proj-desc { font-size: 1.05rem; color: var(--text-muted); line-height: 1.8; font-weight: 300; }
+    
+    .proj-imgs-wrap { padding: 15px; background: rgba(0,0,0,0.4); border-radius: 16px; border: 1px solid rgba(212, 175, 55, 0.2); transform: translateZ(30px); position: relative;}
+    .proj-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .proj-imgs .img-slot:first-child { grid-column: span 2; height: 260px; }
+    .img-slot { height: 120px; background: #000; border-radius: 8px; position: relative; overflow: hidden; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); }
+    .img-slot img { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top:0; left:0; transition: transform 0.5s ease, opacity 0.5s; opacity: 0.7;}
+    .img-slot:hover img { transform: scale(1.05); opacity: 1; }
+    .slot-ph { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 0.75rem; letter-spacing: 2px; color: var(--text-muted); font-weight: 500; pointer-events: none;}
 
-    #experience .exp-list { display: flex; flex-direction: column; }
-    .exp-item {
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 3rem;
-      padding: 2.5rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .exp-item:last-child { border-bottom: none; }
+    /* ---------------------------------------------------
+       10. EXPERIENCE
+       --------------------------------------------------- */
+    .exp-container { max-width: 900px; margin: 0 auto; border-left: 1px solid rgba(0, 240, 255, 0.2); padding-left: 4rem; position: relative;}
+    .exp-item { position: relative; margin-bottom: 5rem; }
+    .exp-item:last-child { margin-bottom: 0; }
+    .exp-item::before { content: ''; position: absolute; left: -4.3rem; top: 0; width: 11px; height: 11px; background: var(--neon-cyan); border-radius: 50%; box-shadow: 0 0 15px var(--neon-cyan); }
+    
+    .exp-dates { font-size: 0.85rem; color: var(--lux-gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.8rem; display: block; font-weight: 500;}
+    .exp-role { font-family: var(--font-lux); font-size: 1.8rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.3rem; }
+    .exp-org { font-size: 1rem; color: var(--neon-cyan); font-weight: 400; margin-bottom: 1.5rem; display: block; letter-spacing: 1px;}
+    .exp-desc { font-size: 1.05rem; color: var(--text-muted); line-height: 1.8; font-weight: 300; }
+    
+    .exp-imgs { display: flex; gap: 15px; margin-top: 2rem; }
+    .exp-imgs .img-slot { height: 90px; width: 140px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
 
-    .exp-dates { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 0.25rem; }
-    .exp-date { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    /* ---------------------------------------------------
+       11. CONTACT & FOOTER
+       --------------------------------------------------- */
+    #contact { text-align: center; padding-bottom: 8rem; }
+    .contact-card { max-width: 800px; margin: 0 auto; }
+    .contact-headline { font-family: var(--font-lux); font-size: 3.5rem; font-weight: 600; margin-bottom: 1rem; color: var(--lux-gold);}
+    .contact-sub { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 3.5rem; font-weight: 300; }
+    .contact-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
 
-    .exp-role {
-      font-family: var(--font-head);
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.25rem;
-    }
-    .exp-org { font-size: 0.875rem; color: var(--accent); margin-bottom: 0.75rem; }
-    .exp-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+    footer { text-align: center; padding: 2rem; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; font-weight: 300;}
 
-    .exp-imgs {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 1.25rem;
-      height: 140px;
-    }
-    .exp-imgs .img-slot {
-      border-radius: 10px;
-      border: 1px solid var(--border2);
-      flex: 1;
-      max-width: 200px;
-    }
-    .exp-imgs .img-slot:hover { border-color: rgba(200,245,90,0.3); }
-
-    .img-slot {
-      background: var(--bg3);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex: 1;
-      transition: background 0.2s;
-    }
-    .img-slot:hover { background: #222; }
-    .img-slot img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: none;
-      position: absolute; top: 0; left: 0;
-    }
-    .slot-ph {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.4rem;
-      color: var(--muted);
-      pointer-events: none;
-    }
-    .slot-ph svg { width: 20px; height: 20px; opacity: 0.35; }
-    .slot-ph span { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.55; }
-
-    #contact { border-bottom: none; }
-    #contact .contact-inner { max-width: 640px; }
-    .contact-headline {
-      font-family: var(--font-head);
-      font-size: clamp(2rem, 5vw, 4.5rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      margin-bottom: 1.5rem;
-    }
-    .contact-headline .hl { color: var(--accent); }
-    .contact-sub { font-size: 1rem; color: var(--muted); margin-bottom: 2.5rem; max-width: 420px; }
-    .contact-links { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      border: 1px solid var(--border2);
-      border-radius: 100px;
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 0.875rem;
-      transition: all 0.2s;
-    }
-    .contact-link:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
-
-    footer {
-      padding: 2rem 3rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid var(--border);
-    }
-    footer p { font-size: 0.8rem; color: var(--muted); }
-
-    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    /* ---------------------------------------------------
+       12. ANIMASI FADE-IN & LIGHTBOX
+       --------------------------------------------------- */
+    .fade-in { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    .lightbox {
-      display: flex;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0);
-      z-index: 999;
-      align-items: center;
-      justify-content: center;
-      cursor: zoom-out;
-      pointer-events: none;
-      transition: background 0.3s ease;
-    }
-    .lightbox.active {
-      background: rgba(0,0,0,0.92);
-      pointer-events: all;
-    }
-    .lightbox img {
-      max-width: 90vw;
-      max-height: 90vh;
-      object-fit: contain;
-      border-radius: 8px;
-      cursor: default;
-      transform: scale(0.85);
-      opacity: 0;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    .lightbox.active img {
-      transform: scale(1);
-      opacity: 1;
-    }
+    .lightbox { display: flex; position: fixed; inset: 0; background: rgba(3, 5, 8, 0.98); z-index: 99999; align-items: center; justify-content: center; cursor: zoom-out; pointer-events: none; opacity: 0; transition: all 0.4s ease; backdrop-filter: blur(10px);}
+    .lightbox.active { opacity: 1; pointer-events: all; }
+    .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 8px; box-shadow: 0 0 50px rgba(0, 240, 255, 0.15); transform: scale(0.95); transition: transform 0.4s ease; border: 1px solid rgba(212, 175, 55, 0.3); background: #000;}
+    .lightbox.active img { transform: scale(1); }
 
-    @media (max-width: 768px) {
-      nav {
-        padding: 0.75rem 1.25rem;
-      }
-      .nav-links { gap: 1.25rem; }
-      .nav-links a { font-size: 0.75rem; }
-
-      #hero {
-        min-height: auto;
-        padding: 6rem 1.25rem 2.5rem;
-      }
-      .hero-label { margin-bottom: 1rem; }
-      .hero-top {
-        justify-content: space-between;
-        flex-direction: row;
-        align-items: center;
-        gap: 1.25rem;
-        margin-bottom: 1.25rem;
-      }
-      .hero-name { font-size: clamp(2.2rem, 11vw, 3.5rem); }
-      .hero-photo { width: 100px; height: 100px; }
-      .hero-photo-wrap { margin-right: 5rem; }
-      .photo-hint { display: none; }
-      .hero-sub { flex-direction: column; gap: 1rem; }
-      .hero-tagline { font-size: 0.875rem; max-width: 100%; }
-      .hero-cta { gap: 0.75rem; }
-      .btn { padding: 0.55rem 1.1rem; font-size: 0.8rem; }
-      .hero-scroll { display: none; }
-
-      section { padding: 3rem 1.25rem; }
-      .section-title { font-size: clamp(1.5rem, 7vw, 2.2rem); }
-      .section-header { margin-bottom: 2rem; }
-
-      #about .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .about-bio { font-size: 0.95rem; }
-      .about-stats { grid-template-columns: 1fr 1fr; }
-      .stat-box { padding: 1.25rem; }
-      .stat-num { font-size: 1.8rem; }
-
-      #skills .skills-grid { grid-template-columns: 1fr 1fr; }
-      .skill-category { padding: 1.25rem; }
-
-      .project-main { grid-template-columns: 1fr; gap: 0.75rem; padding: 1.25rem; }
-      .project-tags { justify-content: flex-start; }
-      .project-arrow { display: none; }
-      .project-imgs { height: 110px; }
-
-      .exp-item { grid-template-columns: 1fr; gap: 0.25rem; padding: 1.5rem 0; }
-      .exp-dates { flex-direction: row; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
-      .exp-date { font-size: 0.75rem; }
-      .exp-imgs { height: 100px; }
-      .exp-imgs .img-slot { max-width: none; }
-
-      .contact-headline { font-size: clamp(1.8rem, 8vw, 3rem); }
-      .contact-links { gap: 0.75rem; }
-      .contact-link { padding: 0.6rem 1.1rem; font-size: 0.8rem; }
-
-      footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+    /* ---------------------------------------------------
+       13. RESPONSIVE (Layar Handphone)
+       --------------------------------------------------- */
+    @media (max-width: 992px) {
+      nav { padding: 1.5rem; justify-content: center; }
+      .nav-links { display: none; }
+      
+      #hero { grid-template-columns: 1fr; padding: 8rem 2rem 4rem; text-align: center; gap: 4rem;}
+      .hero-name { font-size: 3rem; }
+      .hero-cta { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto;}
+      .photo-wrap { margin: 0 auto; max-width: 320px;}
+      
+      section { padding: 4rem 1.5rem; }
+      .about-grid, .project-item, .project-item:nth-child(even) { grid-template-columns: 1fr; gap: 3rem; }
+      .project-item:nth-child(even) { direction: ltr; }
+      
+      .exp-container { padding-left: 2rem; }
+      .exp-item::before { left: -2.4rem; }
+      .exp-imgs { flex-wrap: wrap; }
+      .exp-imgs .img-slot { width: 100%; height: 160px; }
+      
+      .holo-card { padding: 2rem 1.5rem; transform: none !important;}
+      .contact-links { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
-  <input type="file" id="fi-hero"  accept="image/*" style="display:none" />
+  <!-- Input file fungsionalitas (Aman) -->
+  <input type="file" id="fi-hero" accept="image/*" style="display:none" />
   <input type="file" id="fi-p1-1" accept="image/*" style="display:none" />
   <input type="file" id="fi-p1-2" accept="image/*" style="display:none" />
   <input type="file" id="fi-p1-3" accept="image/*" style="display:none" />
@@ -554,205 +314,185 @@
   <input type="file" id="fi-p2-3" accept="image/*" style="display:none" />
   <input type="file" id="fi-e1-1" accept="image/*" style="display:none" />
   <input type="file" id="fi-e1-2" accept="image/*" style="display:none" />
+  <input type="file" id="fi-e1-3" accept="image/*" style="display:none" />
   <input type="file" id="fi-e2-1" accept="image/*" style="display:none" />
   <input type="file" id="fi-e2-2" accept="image/*" style="display:none" />
+  <input type="file" id="fi-e2-3" accept="image/*" style="display:none" />
+  <input type="file" id="fi-e2-4" accept="image/*" style="display:none" />
 
-  <nav>
-    <a href="#hero" class="nav-logo">Welcome...</a>
+  <div class="bg-ambient"></div>
+
+  <nav class="fade-in">
+    <a href="#hero" class="nav-logo">Welcome</a>
     <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about" class="nav-link">Profile</a></li>
+      <li><a href="#skills" class="nav-link">Expertise</a></li>
+      <li><a href="#projects" class="nav-link">Project</a></li>
+      <li><a href="#experience" class="nav-link">Experience</a></li>
     </ul>
   </nav>
 
   <section id="hero">
-    <p class="hero-label">Portfolio — 2026</p>
-
-    <div class="hero-top">
-      <h1 class="hero-name">
-        Adhitya<br>
-        <span class="line2">Nuryana</span>
-      </h1>
-      <div class="hero-photo-wrap">
-  <div class="hero-photo">
-    <div class="photo-ph" id="hero-ph" style="display:none;">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-      </svg>
-      <span>Upload foto</span>
-    </div>
-    <img id="hero-img" src="poto propil.png" alt="Foto profil Adhitya Nuryana" style="display:block;" />
-  </div>
-</div>
-    </div>
-
-    <div class="hero-sub">
+    <div class="hero-text fade-in">
+      <span class="hero-label">Portfolio</span>
+      <h1 class="hero-name text-gradient">Adhitya<br>Nuryana</h1>
       <p class="hero-tagline">
-        Aspiring Front Office Concierge passionate about hospitality and guest service, with a background in Informatics Engineering from Indraprasta PGRI University.
+        Aspiring hospitality professional focused on guest service, Front Office operations, and luxury hotel experiences, supported by a structured background in Informatics Engineering.
       </p>
       <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary">See Projects →</a>
-        <a href="#contact" class="btn btn-ghost">Contact</a>
+        <a href="#projects" class="btn btn-gold">View Projects</a>
+        <a href="#contact" class="btn btn-cyan">Connect</a>
       </div>
     </div>
-
-    <span class="hero-scroll">Scroll</span>
+    <div class="hero-visual fade-in">
+      <div class="photo-wrap tilt-card">
+        <div class="hero-photo" id="hero-photo-el">
+          <div class="photo-ph" id="hero-ph" style="display:none;">Upload Uplink</div>
+          <img id="hero-img" src="ppkece.jpeg" alt="Foto profil" style="display:block;" />
+        </div>
+      </div>
+    </div>
   </section>
 
   <section id="about">
-    <div class="section-header">
-      <span class="section-num">01</span>
-      <h2 class="section-title">About</h2>
-      <div class="section-line"></div>
+    <div class="section-header fade-in">
+      <span class="section-label">01. Biography</span>
+      <h2 class="section-title text-gradient">My Profile</h2>
     </div>
-
     <div class="about-grid fade-in">
-      <div class="about-bio">
-        <p>
-          Hi, I'm <strong>Adhitya Nuryana</strong>. A graduate of Informatics Engineering from Indraprasta PGRI University. I have a strong interest in the front office field in the hotel industry, especially in providing excellent guest service and creating a positive first impression for guests. I enjoy interacting with people, improving my communication skills, and learning how hotel operations work, particularly in the front office area.
-        </p>
-        <br>
-        <p>
-          When I'm not studying or learning about hospitality, I usually spend my time reading novels and listening to music as a way to improve my English skills and broaden my understanding of language.
-        </p>
+      
+      <!-- DOKUMENTASI FIX: .holo-glow ditambahkan ke setiap holo-card -->
+      <div class="holo-card tilt-card">
+        <div class="holo-glow"></div>
+        <div class="holo-content">
+          <div class="about-bio">
+            <p>I am <strong>Adhitya Nuryana</strong>, an Informatics Engineering graduate from Indraprasta PGRI University with a strong interest in luxury hospitality, particularly in Front Office operations.</p><br>
+            <p>I am passionate about guest service, communication, and creating a positive first impression for every guest. My technical background helps me approach hotel operations with structure, accuracy, and problem-solving, while my hospitality experience has shaped my discipline, teamwork, and service-oriented mindset.</p><br>
+            <p>Outside of my professional interests, I enjoy reading and listening to music as a way to improve my English skills, expand my vocabulary, and broaden my cultural understanding.</p>
+          </div>
+        </div>
       </div>
-
-     <div class="about-stats">
-        <div class="stat-box">
-          <div class="stat-label">Languages</div>
-          <div class="stat-text">Indonesian, English, Japanese</div>
+      
+      <div class="stats-container">
+        <div class="stat-box holo-card tilt-card">
+          <div class="holo-glow"></div>
+          <div class="holo-content"><span class="stat-val">ID, EN, JP</span><span class="stat-lbl">Languages</span></div>
         </div>
-        <div class="stat-box">
-          <div class="stat-label">Guest Service Skills</div>
-          <div class="stat-text">Developing</div>
+        <div class="stat-box holo-card tilt-card">
+          <div class="holo-glow"></div>
+          <div class="holo-content"><span class="stat-val">Front Office</span><span class="stat-lbl">Career Path</span></div>
         </div>
-        <div class="stat-box">
-          <div class="stat-label">Communication Skills</div>
-          <div class="stat-text">Strong</div>
+        <div class="stat-box holo-card tilt-card">
+          <div class="holo-glow"></div>
+          <div class="holo-content"><span class="stat-val">Excellent Service</span><span class="stat-lbl">Core Focus</span></div>
         </div>
-        <div class="stat-box">
-          <div class="stat-label">Career Path</div>
-          <div class="stat-text">Front Office — Concierge</div>
+        <div class="stat-box holo-card tilt-card">
+          <div class="holo-glow"></div>
+          <div class="holo-content"><span class="stat-val">Strong</span><span class="stat-lbl">Communication</span></div>
         </div>
       </div>
     </div>
   </section>
 
   <section id="skills">
-    <div class="section-header">
-      <span class="section-num">02</span>
-      <h2 class="section-title">Skills</h2>
-      <div class="section-line"></div>
+    <div class="section-header fade-in">
+      <span class="section-label">02. Expertise</span>
+      <h2 class="section-title text-gradient">Skills</h2>
     </div>
-
     <div class="skills-grid fade-in">
-      <div class="skill-category">
-        <div class="skill-cat-title">Languages</div>
-        <div class="skill-tags">
-          <span class="skill-tag">Indonesian - Native</span>
-          <span class="skill-tag">English - Intermediate</span>
-          <span class="skill-tag">Japan - Basic</span>
+      <div class="skill-module holo-card tilt-card">
+        <div class="holo-glow"></div>
+        <div class="holo-content skill-cat">
+          <h3>Languages</h3>
+          <ul class="skill-list">
+            <li>Indonesian (Native)</li>
+            <li>English (Intermediate)</li>
+            <li>Japanese (Basic)</li>
+          </ul>
         </div>
       </div>
-      <div class="skill-category">
-        <div class="skill-cat-title">Concierge Skills</div>
-        <div class="skill-tags">
-          <span class="skill-tag">Guest Assistance</span>
-          <span class="skill-tag">Local Information Support</span>
-          <span class="skill-tag">Booking &amp; Reservation Assistance</span>
-          <span class="skill-tag">Information Service</span>
+      <div class="skill-module holo-card tilt-card">
+        <div class="holo-glow"></div>
+        <div class="holo-content skill-cat">
+          <h3>Operations</h3>
+          <ul class="skill-list">
+            <li>SOP Awareness</li>
+            <li>Operational Readiness</li>
+            <li>Quality & Hygiene Standards</li>
+          </ul>
         </div>
       </div>
-      <div class="skill-category">
-        <div class="skill-cat-title">Soft Skills</div>
-        <div class="skill-tags">
-          <span class="skill-tag">Guest Communication</span>
-          <span class="skill-tag">Service Orientation</span>
-          <span class="skill-tag">Problem Handling</span>
-          <span class="skill-tag">Adaptability</span>
+      <div class="skill-module holo-card tilt-card">
+        <div class="holo-glow"></div>
+        <div class="holo-content skill-cat">
+          <h3>Guest Service</h3>
+          <ul class="skill-list">
+            <li>Effective Communication</li>
+            <li>Problem Handling</li>
+            <li>Service Excellent</li>
+          </ul>
         </div>
       </div>
-      <div class="skill-category">
-        <div class="skill-cat-title">Others</div>
-        <div class="skill-tags">
-          <span class="skill-tag">Basic Microsoft Office</span>
-          <span class="skill-tag">Computer Skills</span>
-          <span class="skill-tag">Time Management</span>
-          <span class="skill-tag">Professional Appearance</span>
+      <div class="skill-module holo-card tilt-card">
+        <div class="holo-glow"></div>
+        <div class="holo-content skill-cat">
+          <h3>Technical Skills</h3>
+          <ul class="skill-list">
+            <li>Microsoft Office</li>
+            <li>Computer Literacy</li>
+            <li>Time Management</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
   <section id="projects">
-    <div class="section-header">
-      <span class="section-num">03</span>
-      <h2 class="section-title">Projects</h2>
-      <div class="section-line"></div>
+    <div class="section-header fade-in">
+      <span class="section-label">03. Projects</span>
+      <h2 class="section-title text-gradient">Project Archives</h2>
     </div>
-
-    <div class="projects-list fade-in">
-
-      <div class="project-item">
-        <div class="project-main">
-          <div>
-            <div class="project-name">Game Development Project (Game Designer)</div>
-            <div class="project-desc">
-              Worked as a Game Designer with roles as Level Designer, Mechanics Designer, and Character Modeler. This experience improved my creativity, attention to detail, and ability to understand user experience—skills that are important in delivering satisfying guest experiences in hospitality.
+    
+    <div class="projects-list">
+      
+      <!-- Project 1 -->
+      <div class="project-item fade-in">
+        <div class="proj-info holo-card tilt-card">
+          <div class="holo-glow"></div>
+          <div class="holo-content">
+            <h3 class="proj-name">Game Development</h3>
+            <div class="proj-tags">
+              <span class="proj-tag">C++</span><span class="proj-tag">Unity</span><span class="proj-tag">Figma</span><span class="proj-tag">Notion</span>
             </div>
-          </div>
-          <div class="project-tags">
-            <span class="project-tag">C++</span>
-            <span class="project-tag">Unity</span>
-            <span class="project-tag">Figma</span>
-            <span class="project-tag">Notion</span>
+            <p class="proj-desc">Contributed as a Game Designer in a game development project, taking part in level design, mechanics design, and character modeling. Used C++, Unity, Figma, and Notion to support gameplay planning, design documentation, and team collaboration. This experience strengthened my creativity, attention to detail, user experience thinking, and structured problem-solving skills, which are also valuable in creating thoughtful guest experiences in hospitality.</p>
           </div>
         </div>
-        <div class="project-imgs">
-          <div class="img-slot" data-fi="fi-p1-1" data-img="p1-1">
-            <img id="p1-1" src="ssrpoyek1.png" alt="" style="display:block;" />
-            <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
-          </div>
-          <div class="img-slot" data-fi="fi-p1-2" data-img="p1-2">
-            <img id="p1-1" src="ssproyek2.png" alt="" style="display:block;" />
-            <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
-          </div>
-          <div class="img-slot" data-fi="fi-p1-3" data-img="p1-3">
-            <img id="p1-1" src="ssproyek3.png" alt="" style="display:block;" />
-            <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="proj-imgs-wrap tilt-card">
+          <div class="proj-imgs">
+            <div class="img-slot" data-fi="fi-p1-1"><img src="ssrpoyek1.png" style="display:block;" /><div class="slot-ph"></div></div>
+            <div class="img-slot" data-fi="fi-p1-2"><img src="ssproyek2.png" style="display:block;" /><div class="slot-ph"></div></div>
+            <div class="img-slot" data-fi="fi-p1-3"><img src="ssproyek3.png" style="display:block;" /><div class="slot-ph"></div></div>
           </div>
         </div>
       </div>
 
-      <div class="project-item">
-        <div class="project-main">
-          <div>
-            <div class="project-name">Decision Support System for Teacher Reward (Thesis Project)</div>
-            <div class="project-desc">
-              Developed a web-based decision support system using the Profile Matching method for selecting outstanding teachers at SDN Manggarai 05 Pagi. This project enhanced my analytical thinking, problem-solving skills, and ability to work systematically—useful in handling guest requests and making quick, accurate decisions in front office operations.
+      <!-- Project 2 -->
+      <div class="project-item fade-in">
+        <div class="proj-info holo-card tilt-card">
+          <div class="holo-glow"></div>
+          <div class="holo-content">
+            <h3 class="proj-name">Decision Support System — Thesis Project</h3>
+            <div class="proj-tags">
+              <span class="proj-tag">HTML</span><span class="proj-tag">CSS</span><span class="proj-tag">PHP</span><span class="proj-tag">MySQL</span>
             </div>
-          </div>
-          <div class="project-tags">
-            <span class="project-tag">HTML</span>
-            <span class="project-tag">CSS</span>
+            <p class="proj-desc">Developed a web-based decision support system using the Profile Matching method to support the selection process for outstanding teachers at SDN Manggarai 05 Pagi. Built with HTML and CSS, the system includes teacher data management, criteria management, assessment input, and ranking results. This project strengthened my analytical thinking, structured problem-solving, attention to detail, and ability to create user-facing digital solutions.</p>
           </div>
         </div>
-        <div class="project-imgs">
-          <div class="img-slot" data-fi="fi-p2-1" data-img="p2-1">
-            <img id="p1-1" src="skripsi1.png" alt="" style="display:block;" />
-            <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
-          </div>
-          <div class="img-slot" data-fi="fi-p2-2" data-img="p2-2">
-            <img id="p1-1" src="skripsi2.png" alt="" style="display:block;" />
-            <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
-          </div>
-          <div class="img-slot" data-fi="fi-p2-3" data-img="p2-3">
-            <img id="p1-1" src="skripsi3.png" alt="" style="display:block;" />
-            <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
+        <div class="proj-imgs-wrap tilt-card">
+          <div class="proj-imgs">
+            <div class="img-slot" data-fi="fi-p2-1"><img src="skripsi1.png" style="display:block;" /><div class="slot-ph"></div></div>
+            <div class="img-slot" data-fi="fi-p2-2"><img src="skripsi2.png" style="display:block;" /><div class="slot-ph"></div></div>
+            <div class="img-slot" data-fi="fi-p2-3"><img src="skripsi3.png" style="display:block;" /><div class="slot-ph"></div></div>
           </div>
         </div>
       </div>
@@ -761,69 +501,44 @@
   </section>
 
   <section id="experience">
-    <div class="section-header">
-      <span class="section-num">04</span>
-      <h2 class="section-title">Experience</h2>
-      <div class="section-line"></div>
+    <div class="section-header fade-in">
+      <span class="section-label">04. Experience</span>
+      <h2 class="section-title text-gradient">Career Logs</h2>
     </div>
-
-    <div class="exp-list fade-in">
-
-      <div class="exp-item">
-        <div class="exp-dates">
-          <div class="exp-date">Jan 2020 – Apr 2020</div>
-        </div>
-        <div>
-          <div class="exp-role">Luminor Hotel Kota</div>
-          <div class="exp-org">Engineering Intern</div>
-          <div class="exp-desc">
-            Assisted in maintaining hotel facilities and ensuring operational readiness. Gained experience working in a hospitality environment, understanding hotel operations, and supporting service quality behind the scenes. Developed teamwork, responsibility, and attention to detail.
-          </div>
-          <div class="exp-imgs">
-            <div class="img-slot" data-fi="fi-e1-1" data-img="e1-1">
-              <img id="p1-1" src="eks1.jpeg" alt="" style="display:block;" />
-              <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
-            </div>
-            <div class="img-slot" data-fi="fi-e1-2" data-img="e1-2">
-              <img id="p1-1" src="eks2.jpeg" alt="" style="display:block;" />
-              <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
-            </div>
-            <div class="img-slot" data-fi="fi-e1-2" data-img="e1-2">
-              <img id="p1-1" src="eks3.jpeg" alt="" style="display:block;" />
-              <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
+    
+    <div class="exp-container">
+      
+      <!-- Experience 1 -->
+      <div class="exp-item fade-in">
+        <div class="holo-card tilt-card" style="padding: 2rem;">
+          <div class="holo-glow"></div>
+          <div class="holo-content">
+            <span class="exp-dates">Jan — Apr 2020</span>
+            <h3 class="exp-role">Engineering Intern</h3>
+            <span class="exp-org">Luminor Hotel Kota</span>
+            <p class="exp-desc">Supported daily hotel operations by assisting with facility maintenance, basic inspections, and operational readiness. This experience strengthened my discipline, teamwork, attention to detail, and understanding of how behind-the-scenes support contributes to guest comfort and service quality.</p>
+            <div class="exp-imgs">
+              <div class="img-slot" data-fi="fi-e1-1"><img src="eks1.jpeg" style="display:block;" /><div class="slot-ph"></div></div>
+              <div class="img-slot" data-fi="fi-e1-2"><img src="eks2.jpeg" style="display:block;" /><div class="slot-ph"></div></div>
+              <div class="img-slot" data-fi="fi-e1-3"><img src="eks3.jpeg" style="display:block;" /><div class="slot-ph"></div></div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="exp-item">
-        <div class="exp-dates">
-          <div class="exp-date">Feb 2025 – Apr 2025</div>
-          <div class="exp-date">Nov 2025 – Dec 2025</div>
-          <div class="exp-date">Feb 2026 – Apr 2026</div>
-        </div>
-        <div>
-          <div class="exp-role">Holland Bakery</div>
-          <div class="exp-org">Production Staff (Daily Worker)</div>
-          <div class="exp-desc">
-            Handled production processes while maintaining quality and hygiene standards. Developed strong discipline, adaptability, and the ability to work under pressure—skills that are essential in delivering consistent service in hospitality.
-          </div>
-          <div class="exp-imgs">
-            <div class="img-slot" data-fi="fi-e2-1" data-img="e2-1">
-              <img id="p1-1" src="eks4.jpeg" alt="" style="display:block;" />
-              <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
-            </div>
-            <div class="img-slot" data-fi="fi-e2-2" data-img="e2-2">
-              <img id="p1-1" src="eks5.jpeg" alt="" style="display:block;" />
-              <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
-            </div>
-            <div class="img-slot" data-fi="fi-e2-2" data-img="e2-2">
-              <img id="p1-1" src="eks6.jpeg" alt="" style="display:block;" />
-              <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
-            </div>
-            <div class="img-slot" data-fi="fi-e2-2" data-img="e2-2">
-              <img id="p1-1" src="eks7.jpeg" alt="" style="display:block;" />
-              <div class="slot-ph"><path d="M21 15l-5-5L5 21"/></svg></div>
+      <!-- Experience 2 -->
+      <div class="exp-item fade-in">
+        <div class="holo-card tilt-card" style="padding: 2rem;">
+          <div class="holo-glow"></div>
+          <div class="holo-content">
+            <span class="exp-dates">Feb–Apr 2025 · Nov–Dec 2025 · Feb–Apr 2026</span>
+            <h3 class="exp-role">Production Staff — Daily Worker</h3>
+            <span class="exp-org">Holland Bakery</span>
+            <p class="exp-desc">Assisted in daily food production processes, including material preparation, product handling, and baking preparation. Maintained quality, cleanliness, and hygiene standards while working under SOP, production targets, and supervisor instructions. This experience strengthened my discipline, attention to detail, teamwork, and adaptability in a fast-paced environment.</p>
+            <div class="exp-imgs">
+              <div class="img-slot" data-fi="fi-e2-1"><img src="eks4.jpeg" style="display:block;" /><div class="slot-ph"></div></div>
+              <div class="img-slot" data-fi="fi-e2-2"><img src="eks5.jpeg" style="display:block;" /><div class="slot-ph"></div></div>
+              <div class="img-slot" data-fi="fi-e2-3"><img src="eks6.jpeg" style="display:block;" /><div class="slot-ph"></div></div>
             </div>
           </div>
         </div>
@@ -833,33 +548,22 @@
   </section>
 
   <section id="contact">
-    <div class="contact-inner fade-in">
-      <h2 class="contact-headline">Let's<br><span class="hl">connect.</span></h2>
-      <p class="contact-sub">
-        Open for collaborations, internships, or just a good conversation.
-        Feel free to reach out.
-      </p>
-      <div class="contact-links">
-  <a href="#" class="contact-link" id="email-link">✉ Email</a>
-
-  <a href="https://wa.me/6285157550253" target="_blank" class="contact-link">
-    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
-      <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.472 2.027 7.773L0 32l8.437-2.01A15.94 15.94 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 01-6.771-1.854l-.486-.29-5.01 1.194 1.232-4.88-.317-.5A13.267 13.267 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.862c-.398-.199-2.354-1.162-2.72-1.294-.365-.133-.631-.199-.897.199-.266.398-1.03 1.294-1.263 1.56-.232.266-.465.299-.863.1-.398-.2-1.68-.619-3.2-1.974-1.183-1.054-1.981-2.356-2.213-2.754-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.698.2-.232.266-.398.398-.664.133-.266.067-.498-.033-.697-.1-.2-.897-2.162-1.23-2.96-.324-.777-.653-.672-.897-.684l-.764-.013c-.266 0-.697.1-1.063.498-.365.398-1.395 1.362-1.395 3.324s1.428 3.854 1.627 4.12c.2.266 2.81 4.29 6.808 6.017.951.41 1.694.655 2.272.839.955.304 1.824.261 2.511.158.766-.114 2.354-.962 2.687-1.89.332-.929.332-1.726.232-1.89-.1-.165-.365-.265-.764-.464z"/>
-    </svg>
-    WhatsApp
-  </a>
-
-  <a href="https://instagram.com/adht_nry" target="_blank" class="contact-link">
-    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
-      <path d="M16 2.881c4.275 0 4.781.019 6.462.094 1.563.069 2.406.331 2.969.55a4.96 4.96 0 011.837 1.194 4.96 4.96 0 011.194 1.837c.219.563.481 1.406.55 2.969.075 1.688.094 2.194.094 6.469s-.019 4.781-.094 6.463c-.069 1.563-.331 2.406-.55 2.969a4.96 4.96 0 01-1.194 1.837 4.96 4.96 0 01-1.837 1.194c-.563.219-1.406.481-2.969.55-1.688.075-2.194.094-6.462.094s-4.781-.019-6.463-.094c-1.563-.069-2.406-.331-2.969-.55a4.96 4.96 0 01-1.837-1.194 4.96 4.96 0 01-1.194-1.837c-.219-.563-.481-1.406-.55-2.969C2.9 20.781 2.88 20.275 2.88 16s.019-4.781.094-6.463c.069-1.563.331-2.406.55-2.969A4.96 4.96 0 014.72 4.731a4.96 4.96 0 011.837-1.194c.563-.219 1.406-.481 2.969-.55C11.219 2.9 11.725 2.88 16 2.88zM16 0c-4.344 0-4.887.019-6.594.094C7.806.169 6.6.45 5.55.863A7.836 7.836 0 002.706 2.7 7.836 7.836 0 00.863 5.544C.45 6.594.169 7.8.094 9.406.019 11.113 0 11.656 0 16s.019 4.887.094 6.594c.075 1.606.356 2.812.769 3.856a7.836 7.836 0 001.837 2.844 7.836 7.836 0 002.844 1.837c1.05.413 2.25.694 3.856.769C11.113 31.981 11.656 32 16 32s4.887-.019 6.594-.094c1.606-.075 2.812-.356 3.856-.769a7.836 7.836 0 002.844-1.837 7.836 7.836 0 001.837-2.844c.413-1.05.694-2.25.769-3.856C31.981 20.887 32 20.344 32 16s-.019-4.887-.094-6.594c-.075-1.606-.356-2.812-.769-3.856a7.836 7.836 0 00-1.837-2.844A7.836 7.836 0 0026.456.863C25.406.45 24.2.169 22.594.094 20.887.019 20.344 0 16 0zm0 7.781a8.219 8.219 0 100 16.438A8.219 8.219 0 0016 7.78zm0 13.556a5.337 5.337 0 110-10.674 5.337 5.337 0 010 10.674zm8.538-13.875a1.919 1.919 0 100 3.838 1.919 1.919 0 000-3.838z"/>
-    </svg>
-    Instagram
-  </a>
-</div>
+    <div class="contact-card holo-card tilt-card fade-in">
+      <div class="holo-glow"></div>
+      <div class="holo-content">
+        <h2 class="contact-headline text-gradient">Let's Connect</h2>
+        <p class="contact-sub">I am open for professional collaborations, career opportunities, or a meaningful conversation regarding the future of hospitality and tech.</p>
+        <div class="contact-links">
+          <a href="#" class="btn btn-gold" id="email-link">Email</a>
+          <a href="https://wa.me/6285157550253" target="_blank" class="btn btn-cyan">WhatsApp</a>
+          <a href="https://instagram.com/adht_nry" target="_blank" class="btn btn-cyan">Instagram</a>
+        </div>
+      </div>
+    </div>
   </section>
 
   <footer>
-    <p>© 2026 - All rights reserved.</p>
+    <p>© 2026 Adhitya Nuryana. Portfolio.</p>
   </footer>
 
   <div class="lightbox" id="lightbox">
@@ -867,73 +571,90 @@
   </div>
 
   <script>
-    // Fade-in
+    // 1. Animasi Transisi Elemen (Smooth Fade-in Up)
     const observer = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Active nav
+    // 2. Active Menu Tracker
     const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
+    const navLinks = document.querySelectorAll('.nav-link');
     window.addEventListener('scroll', () => {
-      let cur = '';
-      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
-      navLinks.forEach(a => {
-        a.style.color = a.getAttribute('href') === `#${cur}` ? 'var(--text)' : 'var(--muted)';
+      let currentId = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) currentId = s.id; });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentId}`) link.classList.add('active');
       });
     });
 
-    // Lightbox
+    // 3. EFEK KARTU 3D (TILT) HOLOGRAFIS
+    if (window.innerWidth > 992) { 
+      document.querySelectorAll('.tilt-card').forEach(card => {
+          card.addEventListener('mousemove', e => {
+              let rect = card.getBoundingClientRect();
+              let x = e.clientX - rect.left; 
+              let y = e.clientY - rect.top;  
+              
+              let rotateX = ((y / rect.height) - 0.5) * -15; 
+              let rotateY = ((x / rect.width) - 0.5) * 15;
+              
+              card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+          });
+          
+          card.addEventListener('mouseleave', () => {
+              card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)`;
+          });
+      });
+    }
+
+    // 4. Logika Upload & Lightbox (Anti-bug terjamin)
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
 
-    function openLightbox(src) {
-      lightboxImg.src = src;
-      lightbox.classList.add('active');
-    }
-
+    function openLightbox(src) { lightboxImg.src = src; lightbox.classList.add('active'); }
     lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
 
-    // Upload handler — klik slot kosong = upload, klik slot berisi foto = lightbox
-    function bindUpload(triggerEl, fileInputId, imgId) {
+    function bindUpload(triggerEl, fileInputId) {
       const fi  = document.getElementById(fileInputId);
-      const img = document.getElementById(imgId);
+      const img = triggerEl.querySelector('img');
       const ph  = triggerEl.querySelector('.photo-ph, .slot-ph');
 
       triggerEl.addEventListener('click', e => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (img.style.display === 'block' && img.src) {
+        e.preventDefault(); e.stopPropagation();
+        if (img && img.style.display === 'block' && img.src) {
           openLightbox(img.src);
         } else {
-          fi.click();
+          if (fi) fi.click();
         }
       });
 
-      fi.addEventListener('change', e => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = ev => {
-          img.src = ev.target.result;
-          img.style.display = 'block';
-          if (ph) ph.style.display = 'none';
-        };
-        reader.readAsDataURL(file);
-      });
+      if (fi) {
+        fi.addEventListener('change', e => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = ev => {
+            if (img) {
+              img.src = ev.target.result;
+              img.style.display = 'block';
+              img.style.cursor = 'zoom-in';
+            }
+            if (ph) ph.style.display = 'none';
+          };
+          reader.readAsDataURL(file);
+        });
+      }
     }
 
-    // Bind foto profil
     const heroPhotoEl = document.getElementById('hero-photo-el');
-    if (heroPhotoEl) bindUpload(heroPhotoEl, 'fi-hero', 'hero-img');
+    if (heroPhotoEl) bindUpload(heroPhotoEl, 'fi-hero');
 
-    // Bind semua slot foto project & experience
     document.querySelectorAll('.img-slot[data-fi]').forEach(el => {
-      bindUpload(el, el.dataset.fi, el.dataset.img);
+      bindUpload(el, el.dataset.fi);
     });
 
-    // Lightbox untuk foto yang di-hardcode (src langsung di HTML)
     document.querySelectorAll('.img-slot img, #hero-img').forEach(img => {
       const src = img.getAttribute('src');
       if (src && src !== '') {
@@ -945,14 +666,15 @@
       }
     });
 
-    // Email redirect
-const emailLink = document.getElementById('email-link');
-const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-emailLink.href = isMobile
-  ? 'mailto:adhityanuryana9@gmail.com'
-  : 'https://mail.google.com/mail/?view=cm&to=adhityanuryana9@gmail.com';
-emailLink.target = isMobile ? '_self' : '_blank';
+    // 5. Deteksi aplikasi Email berdasarkan perangkat
+    const emailLink = document.getElementById('email-link');
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if(emailLink) {
+        emailLink.href = isMobile
+          ? 'mailto:adhityanuryana9@gmail.com'
+          : 'https://mail.google.com/mail/?view=cm&to=adhityanuryana9@gmail.com';
+        emailLink.target = isMobile ? '_self' : '_blank';
+    }
   </script>
-
 </body>
 </html>
